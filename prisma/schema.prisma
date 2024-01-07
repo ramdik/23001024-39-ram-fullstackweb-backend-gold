@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//membuat model
+//nama kolom || type data || optional
+
+model User {
+  id Int @unique @default(autoincrement())
+  email String @unique
+  password String
+  name String
+  date DateTime @default(now())
+  books Book[] //primary key
+}
+
+model Book {
+  id Int @id @default(autoincrement())
+  userId Int
+  name String
+  genre String
+  image String
+  user User @relation(fields: [userId], references: [id]) //primary key
+  
+
+  @@index([userId])
+}
+
+
+//how to use
+// npx prisma migrate reset - Reset
+// npx prisma migrate dev --create-only - Create Migration
+// npx prisma migrate dev/deploy
