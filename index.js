@@ -3,8 +3,10 @@ const bodyparser = require("body-parser")
 const { PrismaClient } = require("@prisma/client")
 const bcrypt = require('bcrypt');
 const app = express()
+const cors = require("cors")
 
 app.use(express.json())
+app.use(cors())
 const prisma = new PrismaClient()
 
 // Users tabel
