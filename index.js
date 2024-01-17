@@ -115,6 +115,77 @@ app.put("/books/:userId/:id", async (req, res)=> {
     res.send(result)
 }) */
 
+
+/* weddingOffer section */
+app.get("/wedding-offers", async (req,res) => {
+    const result = await prisma.weddingOffer.findMany()
+    res.send(result)
+})
+
+// get data weddingOffer with user id
+app.get("/wedding-offers/:userId", async (req,res) => {
+    const { userId } = req.params
+    const result = await prisma.weddingOffer.findMany({
+        where: {
+            userId: parseInt(userId)
+        }
+    })
+    console.log(result)
+    res.send(result)
+})
+
+// get data weddingOffer with user data, and weddingOffer user have data
+app.get("/wedding-offers/:userId/:id", async (req,res) => {
+    const { userId, id } = req.params
+    const result = await prisma.weddingOffer.findMany({
+        where: {
+            userId: parseInt(userId),
+            id: parseInt(id)
+        }
+    })
+    console.log(result)
+    res.send(result)
+})
+
+//store weddingOffer data with id user reference
+app.post("/wedding-offers", async (req, res)=> {
+    const { userId, weddingOfferName, weddingOfferAuthor, weddingOfferPrice, weddingOfferDescription, weddingOfferImg } = req.body
+    const result = await prisma.weddingOffer.create({
+        data: {
+            userId,
+            weddingOfferName,
+            weddingOfferAuthor,
+            weddingOfferPrice,
+            weddingOfferDescription,
+            weddingOfferImg
+        }
+    })
+    console.log(result)
+    res.send(result)
+})
+
+// update data weddingOffer with user id, and weddingOffer id reference
+app.put("/wedding-offers/:userId/:id", async (req, res)=> {
+    const { id, userId } = req.params
+    const { weddingOfferName, weddingOfferAuthor, weddingOfferPrice, weddingOfferDescription, weddingOfferImg } = req.body
+    const result = await prisma.weddingOffer.update({
+        where: {
+            id: parseInt(id),
+            userId: parseInt(userId)
+        },
+        data: {
+            weddingOfferName,
+            weddingOfferAuthor,
+            weddingOfferPrice,
+            weddingOfferDescription,
+            weddingOfferImg
+        }
+    })
+    console.log(result)
+    res.send(result)
+})
+
+
 app.listen(3000, ()=>{
     console.log("Server On at PORT 3000")
 })

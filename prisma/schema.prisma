@@ -14,26 +14,42 @@ datasource db {
 //nama kolom || type data || optional
 
 model User {
-  id Int @unique @default(autoincrement())
-  email String @unique
-  password String
-  name String
-  date DateTime @default(now())
-  books Book[] //primary key
+  id            Int            @unique @default(autoincrement())
+  email         String         @unique
+  password      String
+  name          String
+  date          DateTime       @default(now())
+  books         Book[] //primary key
+  weddingOffers WeddingOffer[] //primary key
+
+  @@id(id)
 }
 
 model Book {
-  id Int @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   userId Int
-  name String
-  genre String
-  image String
-  user User @relation(fields: [userId], references: [id]) //primary key
-  
+  name   String
+  genre  String
+  image  String
+  user   User   @relation(fields: [userId], references: [id]) //primary key
 
   @@index([userId])
 }
 
+model WeddingOffer {
+  id                      Int      @id @default(autoincrement())
+  userId                  Int
+  weddingOfferName        String
+  weddingOfferAuthor      String
+  weddingOfferPrice       Int
+  weddingOfferDescription String
+  weddingOfferImg         String
+  createAt                DateTime @default(now())
+  updateAt                DateTime @updatedAt
+  user                    User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, weddingOfferAuthor])
+}
 
 //how to use
 // npx prisma migrate reset - Reset
